@@ -18,4 +18,6 @@ Imports:
     terra
 Suggests: 
     supercells,
-    sf
+    sf,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
