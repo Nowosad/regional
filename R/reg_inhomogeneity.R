@@ -22,7 +22,7 @@
 #' plot(volcano)
 #' plot(reg_inh["inh"], add = TRUE)
 reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
-  v = vect(region)
+  v = terra::vect(region)
   inh = vector(mode = "numeric", length = length(v))
   for (i in seq_len(length(v))){
     # https://github.com/rspatial/terra/issues/275

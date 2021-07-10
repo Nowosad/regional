@@ -22,12 +22,12 @@
 #' plot(volcano)
 #' plot(reg_inh["iso"], add = TRUE)
 reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
-  v = vect(region)
+  v = terra::vect(region)
   iso = vector(mode = "numeric", length = length(v))
   for (i in seq_len(length(v))){
     sum_dist = 0
     n_elem = 0
-    neigh_id = which(relate(v, v[i], relation = "touches"))
+    neigh_id = which(terra::relate(v, v[i], relation = "touches"))
     for (j in neigh_id){
       vals_i = as.matrix(terra::extract(raster, v[i])[-1])
       vals_j = as.matrix(terra::extract(raster, v[j])[-1])

@@ -22,7 +22,7 @@
 #' plot(volcano)
 #' plot(reg_dis["dis"], add = TRUE)
 reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
-  v = vect(region)
+  v = terra::vect(region)
   dis = vector(mode = "numeric", length = length(v))
   # dis_j = vector(mode = "numeric", length = length(ids) - 1)
   for (i in seq_len(length(v))){
