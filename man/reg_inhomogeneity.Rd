@@ -16,16 +16,18 @@ reg_inhomogeneity(region, raster, dist_fun = "euclidean", sample_size = 20)
 Title
 }
 \examples{
-library(terra)
-library(sf)
-volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
-reg_inh = reg_inhomogeneity(vr, volcano)
+\dontrun{
+  library(terra)
+  library(sf)
+  volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
+  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+  reg_inh = reg_inhomogeneity(vr, volcano)
 
-mean(reg_inh$inh)
+  mean(reg_inh$inh)
 
-plot(volcano)
-plot(vect(vr), add = TRUE)
-plot(volcano)
-plot(reg_inh["inh"], add = TRUE)
+  plot(volcano)
+  plot(vect(vr), add = TRUE)
+  plot(volcano)
+  plot(reg_inh["inh"], add = TRUE)
+}
 }

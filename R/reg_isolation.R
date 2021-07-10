@@ -9,18 +9,20 @@
 #' @export
 #'
 #' @examples
-#' library(terra)
-#' library(sf)
-#' volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-#' vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
-#' reg_inh = reg_isolation(vr, volcano)
+#' \dontrun{
+#'  library(terra)
+#'  library(sf)
+#'  volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
+#'  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+#'  reg_inh = reg_isolation(vr, volcano)
 #'
-#' mean(reg_inh$iso)
+#'  mean(reg_inh$iso)
 #'
-#' plot(volcano)
-#' plot(vect(vr), add = TRUE)
-#' plot(volcano)
-#' plot(reg_inh["iso"], add = TRUE)
+#'  plot(volcano)
+#'  plot(vect(vr), add = TRUE)
+#'  plot(volcano)
+#'  plot(reg_inh["iso"], add = TRUE)
+#'}
 reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
   v = terra::vect(region)
   iso = vector(mode = "numeric", length = length(v))
