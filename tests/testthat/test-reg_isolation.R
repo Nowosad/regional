@@ -4,3 +4,11 @@ reg_iso = reg_isolation(vr[1:2, ], volcano)
 test_that("reg_isolation works", {
   expect_equal(mean(reg_iso$iso), 2)
 })
+
+set.seed(32)
+reg_iso2 = reg_isolation(vo[c(304, 295, 308, 326, 331, 285), ], ortho, sample_size = 5)
+reg_iso2
+
+test_that("reg_isolation works for 3D data", {
+  expect_true(all(reg_iso2$iso[1] > reg_iso2$iso[-1]))
+})
