@@ -30,7 +30,7 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
     # https://github.com/rspatial/terra/issues/275
     # terra::extract(volcano, vect(vr[i, ]), exact = FALSE)
     vals_i = terra::extract(raster, v[i])
-    if (length(vals_i) > sample_size){
+    if (nrow(vals_i) > sample_size){
       vals_i = vals_i[sample(nrow(vals_i), size = sample_size), , drop = FALSE]
     }
     inh[i] = mean(philentropy::distance(vals_i, method = dist_fun,
