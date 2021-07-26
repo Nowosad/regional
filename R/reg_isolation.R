@@ -14,7 +14,7 @@
 #'  library(sf)
 #'  volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
 #'  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
-#'  reg_inh = reg_isolation(vr, volcano)
+#'  reg_inh = reg_isolation2(vr, volcano)
 #'
 #'  mean(reg_inh$iso)
 #'
@@ -24,28 +24,32 @@
 #'  plot(reg_inh["iso"], add = TRUE)
 #'}
 reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
+  set.seed(32)
   v = terra::vect(region)
   iso = vector(mode = "numeric", length = length(v))
   for (i in seq_len(length(v))){
     sum_dist = 0
     n_elem = 0
+    vals_i = as.matrix(terra::extract(raster, v[i])[-1])
+    if (nrow(vals_i) > sample_size){
+      vals_i = vals_i[sample(nrow(vals_i), size = sample_size), , drop = FALSE]
+    }
     neigh_id = which(terra::relate(v, v[i], relation = "touches"))
     for (j in neigh_id){
-      vals_i = as.matrix(terra::extract(raster, v[i])[-1])
       vals_j = as.matrix(terra::extract(raster, v[j])[-1])
-      if (nrow(vals_i) > sample_size){
-        vals_i = vals_i[sample(nrow(vals_i), size = sample_size), , drop = FALSE]
-      }
       if (nrow(vals_j) > sample_size){
         vals_j = vals_j[sample(nrow(vals_j), size = sample_size), , drop = FALSE]
       }
       for (vi in seq_len(nrow(vals_i))){
         for (vj in seq_len(nrow(vals_j))){
-          pair_of_vals = rbind(vals_i[vi, ], vals_j[vj, ])
-          tmp_dist = philentropy::distance(pair_of_vals,
-                                           method = dist_fun,
-                                           # as.dist.obj = TRUE,
-                                           mute.message = TRUE)
+          # cat("i = ", i, "; j = ", j,  "; vi = ", vi,  "; vj = ", vj)
+          # i=  42 ; j =  24 ; vi =  1 ; vj =  20
+          # Error in vals_i[vj, ] : subscript out of bounds
+          # pair_of_vals = rbind(vals_i[vi, ], vals_j[vj, ])
+          tmp_dist = philentropy:::single_distance(vals_i[vi, ],
+                                                vals_j[vj, ],
+                                                dist_fun = dist_fun,
+                                                FALSE, "")
           sum_dist = sum_dist + tmp_dist
           n_elem = n_elem + 1
         }
@@ -57,3 +61,80 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 2
   return(region)
 }
 
+#' @export
+reg_isolation2 = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
+  set.seed(32)
+  v = terra::vect(region)
+  iso = vector(mode = "numeric", length = length(v))
+  for (i in seq_len(length(v))){
+    sum_dist = 0
+    n_elem = 0
+    vals_i = as.matrix(terra::extract(raster, v[i])[-1])
+    if (nrow(vals_i) > sample_size){
+      vals_i = vals_i[sample(nrow(vals_i), size = sample_size), , drop = FALSE]
+    }
+    neigh_id = which(terra::relate(v, v[i], relation = "touches"))
+    for (j in neigh_id){
+      vals_j = as.matrix(terra::extract(raster, v[j])[-1])
+      if (nrow(vals_j) > sample_size){
+        vals_j = vals_j[sample(nrow(vals_j), size = sample_size), , drop = FALSE]
+      }
+      dist_mat = philentropy:::dist_many_many(vals_i, vals_j,
+                                              dist_fun = dist_fun,
+                                              FALSE, "")
+      sum_dist = sum_dist + sum(dist_mat)
+      n_elem = n_elem + length(dist_mat)
+    }
+    iso[i] = sum_dist/n_elem
+  }
+  region$iso = iso
+  return(region)
+}
+
+#' @export
+reg_isolation3 = function(region, raster, dist_fun = "euclidean", sample_size = 50) {
+  # set.seed(32)
+  v = terra::vect(region)
+  iso = vector(mode = "numeric", length = length(v))
+  for (i in seq_len(length(v))){
+    vals_i = as.matrix(terra::extract(raster, v[i])[-1])
+    if (nrow(vals_i) > sample_size){
+      vals_i = vals_i[sample(nrow(vals_i), size = sample_size), , drop = FALSE]
+    }
+    neigh_id = which(terra::relate(v, v[i], relation = "touches"))
+    neigh_v = v[neigh_id]
+    neigh_v_sample = spatSample(neigh_v, size = sample_size, method = "random")
+    vals_j = as.matrix(terra::extract(raster, neigh_v_sample)[-1])
+    dist_mat = philentropy:::dist_many_many(vals_i, vals_j,
+                                            dist_fun = dist_fun,
+                                            FALSE, "")
+    iso[i] = mean(dist_mat)
+  }
+  region$iso = iso
+  return(region)
+}
+
+
+# library(terra)
+# library(sf)
+# volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
+# vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+# reg_inh = reg_isolation2(vr, volcano)
+#
+# bench::mark(reg_isolation(vr, volcano),
+#             reg_isolation2(vr, volcano))
+# gc()
+#
+# profvis::profvis(reg_isolation(vr, volcano))
+# profvis::profvis(reg_isolation2(vr, volcano))
+# profvis::profvis(reg_isolation3(vr, volcano))
+#
+#
+# i1 = reg_isolation(vr, volcano)
+# profvis::profvis({i2 = reg_isolation2(vr, volcano, sample_size = 100)})
+# profvis::profvis({i3 = reg_isolation3(vr, volcano, sample_size = 150)})
+#
+# bench::mark(reg_isolation(vr, volcano, sample_size = 100),
+#             reg_isolation2(vr, volcano, sample_size = 100),
+#             reg_isolation3(vr, volcano, sample_size = 150),
+#             check = FALSE)
