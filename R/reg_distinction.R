@@ -84,6 +84,26 @@ reg_distinction2 = function(region, raster, dist_fun = "euclidean", sample_size 
   return(region)
 }
 
+reg_distinction3 = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
+  set.seed(32)
+  v = terra::vect(region)
+  dis = vector(mode = "numeric", length = length(v))
+  # dis_j = vector(mode = "numeric", length = length(ids) - 1)
+  for (i in seq_len(length(v))){
+    vals_i = as.matrix(terra::extract(raster, v[i])[-1])
+    if (nrow(vals_i) > sample_size){
+      vals_i = vals_i[sample(nrow(vals_i), size = sample_size), , drop = FALSE]
+    }
+    v_sample = spatSample(v[-i], size = sample_size, method = "random")
+    vals_j = as.matrix(terra::extract(raster, v_sample)[-1])
+    dist_mat = philentropy:::dist_many_many(vals_i, vals_j, dist_fun = dist_fun, testNA = FALSE, unit = "log2")
+    dis[i] = mean(dist_mat)
+  }
+  region$dis = dis
+  return(region)
+}
+
+
 #
 #
 # library(terra)
@@ -92,8 +112,15 @@ reg_distinction2 = function(region, raster, dist_fun = "euclidean", sample_size 
 # vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
 # reg_inh = reg_distinction(vr, volcano)
 #
-# bench::mark(reg_distinction(vr, volcano),
-#             reg_distinction2(vr, volcano))
+# bench::mark(
+#   # reg_distinction(vr, volcano),
+#             reg_distinction2(vr, volcano),
+#             reg_distinction3(vr, volcano, sample_size = 400), check = FALSE)
 #
 # profvis::profvis(reg_distinction(vr, volcano))
 # profvis::profvis(reg_distinction2(vr, volcano))
+#
+# rd1 = reg_distinction2(vr, volcano, sample_size = 30)
+# rd2 = reg_distinction3(vr, volcano, sample_size = 400)
+# plot(rd1$dis, rd2$dis)
+# cor(rd1$dis, rd2$dis)
