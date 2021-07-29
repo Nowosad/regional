@@ -6,7 +6,7 @@ test_that("reg_inhomogeneity works", {
 })
 
 set.seed(32)
-reg_inh2 = reg_inhomogeneity(vo[c(99, 453), ], ortho, sample_size = 5)
+reg_inh2 = reg_inhomogeneity(vo[c(99, 453), ], ortho, sample_size = 0.5)
 reg_inh2
 
 test_that("reg_inhomogeneity works for 3D data", {

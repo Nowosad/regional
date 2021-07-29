@@ -2,11 +2,11 @@ set.seed(432)
 reg_iso = reg_isolation(vr[1:2, ], volcano)
 
 test_that("reg_isolation works", {
-  expect_equal(mean(reg_iso$iso), 2)
+  expect_equal(mean(reg_iso$iso), 1.95, tolerance = 0.01)
 })
 
 set.seed(32)
-reg_iso2 = reg_isolation(vo[c(304, 295, 308, 326, 331, 285), ], ortho, sample_size = 5)
+reg_iso2 = reg_isolation(vo[c(304, 295, 308, 326, 331, 285), ], ortho, sample_size = 0.5)
 reg_iso2
 
 test_that("reg_isolation works for 3D data", {

@@ -4,7 +4,7 @@
 \alias{reg_inhomogeneity}
 \title{Title}
 \usage{
-reg_inhomogeneity(region, raster, dist_fun = "euclidean", sample_size = 20)
+reg_inhomogeneity(region, raster, dist_fun = "euclidean", sample_size = 1)
 }
 \arguments{
 \item{sample_size}{}
@@ -21,7 +21,7 @@ Title
   library(sf)
   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
-  reg_inh = reg_inhomogeneity(vr, volcano)
+  reg_inh = reg_inhomogeneity(vr, volcano, sample_size = 0.5)
 
   mean(reg_inh$inh)
 
