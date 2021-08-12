@@ -29,13 +29,13 @@ stands out from the other regions.
   library(sf)
   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
-  reg_dis = reg_distinction(vr, volcano, sample_size = 0.5)
+  volcano$dis = reg_distinction(vr, volcano, sample_size = 0.5)
 
   mean(reg_dis$dis)
 
   plot(volcano)
   plot(vect(vr), add = TRUE)
   plot(volcano)
-  plot(reg_dis["dis"], add = TRUE)
+  plot(volcano["dis"], add = TRUE)
 }
 }

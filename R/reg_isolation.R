@@ -19,14 +19,14 @@
 #'  library(sf)
 #'  volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
 #'  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
-#'  reg_inh = reg_isolation(vr, volcano, sample_size = 1)
+#'  vr$iso = reg_isolation(vr, volcano, sample_size = 1)
 #'
-#'  mean(reg_inh$iso)
+#'  mean(volcano$iso)
 #'
 #'  plot(volcano)
 #'  plot(vect(vr), add = TRUE)
 #'  plot(volcano)
-#'  plot(reg_inh["iso"], add = TRUE)
+#'  plot(vr["iso"], add = TRUE)
 #'}
 reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1) {
   # set.seed(32)
