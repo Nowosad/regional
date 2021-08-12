@@ -16,7 +16,7 @@ reg_inhomogeneity(region, raster, dist_fun = "euclidean", sample_size = 1)
 \item{sample_size}{Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.}
 }
 \value{
-
+A vector with the inhomogeneity values
 }
 \description{
 Inhomogeneity measures a degree of mutual dissimilarity
@@ -29,7 +29,7 @@ represent consistent patterns so the cluster is pattern-homogeneous.
   library(terra)
   library(sf)
   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
   reg_inh = reg_inhomogeneity(vr, volcano, sample_size = 0.5)
 
   mean(reg_inh$inh)

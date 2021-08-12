@@ -16,7 +16,7 @@ reg_distinction(region, raster, dist_fun = "euclidean", sample_size = 1)
 \item{sample_size}{Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.}
 }
 \value{
-
+A vector with the distinction values
 }
 \description{
 Distinction is an average distance between the focus region and all of the other regions.
@@ -28,7 +28,7 @@ stands out from the other regions.
   library(terra)
   library(sf)
   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
   reg_dis = reg_distinction(vr, volcano, sample_size = 0.5)
 
   mean(reg_dis$dis)

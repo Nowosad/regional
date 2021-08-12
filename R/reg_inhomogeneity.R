@@ -10,7 +10,7 @@
 #' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function in the background. Run `philentropy::getDistMethods()` to find possible distance measures.
 #' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 #'
-#' @return
+#' @return A vector with the inhomogeneity values
 #' @export
 #'
 #' @examples
