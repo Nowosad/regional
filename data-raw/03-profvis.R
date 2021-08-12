@@ -2,7 +2,7 @@ profvis::profvis({
   library(terra)
   library(sf)
   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
   reg_inh = reg_inhomogeneity(vr, volcano)
   reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
     v = terra::vect(region)
@@ -27,7 +27,7 @@ profvis::profvis({
   library(terra)
   library(sf)
   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
   reg_inh = reg_isolation(vr, volcano)
 
   reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 20) {

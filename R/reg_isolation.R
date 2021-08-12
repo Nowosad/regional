@@ -1,9 +1,14 @@
-#' Title
+#' Isolation
 #'
-#' @param region
-#' @param raster
-#' @param dist_fun
-#' @param sample_size
+#' Isolation is an average distance between the focus region
+#' and all of its neighbors. This value is between 0 and 1,
+#' where large value indicates that values of the region
+#' stands out from its surroundings.
+#'
+#' @param region An object of class `sf` with a `POLYGON` or `MULTIPOLYGON` geometry type
+#' @param raster An object of class SpatRaster (terra)
+#' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function in the background. Run `philentropy::getDistMethods()` to find possible distance measures.
+#' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 #'
 #' @return
 #' @export
@@ -13,7 +18,7 @@
 #'  library(terra)
 #'  library(sf)
 #'  volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-#'  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+#'  vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
 #'  reg_inh = reg_isolation(vr, volcano, sample_size = 1)
 #'
 #'  mean(reg_inh$iso)
@@ -50,8 +55,8 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
     # cat("\n", "i:", i)
     iso[i] = sum_dist/n_elem
   }
-  region$iso = iso
-  return(region)
+  # region$iso = iso
+  return(iso)
 }
 
 # #' @export
@@ -119,7 +124,7 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
 # library(terra)
 # library(sf)
 # volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-# vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+# vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
 # reg_inh = reg_isolation2(vr, volcano)
 #
 # bench::mark(reg_isolation(vr, volcano),

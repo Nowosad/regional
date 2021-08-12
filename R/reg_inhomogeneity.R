@@ -1,9 +1,14 @@
-#' Title
+#' Inhomogeneity
 #'
-#' @param region
-#' @param raster
-#' @param dist_fun
-#' @param sample_size
+#' Inhomogeneity measures a degree of mutual dissimilarity
+#' between values of all cells in a region. This value is between 0 and 1,
+#' where small value indicates that values of all cells in the region
+#' represent consistent patterns so the cluster is pattern-homogeneous.
+#'
+#' @param region An object of class `sf` with a `POLYGON` or `MULTIPOLYGON` geometry type
+#' @param raster An object of class SpatRaster (terra)
+#' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function in the background. Run `philentropy::getDistMethods()` to find possible distance measures.
+#' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 #'
 #' @return
 #' @export
@@ -13,7 +18,7 @@
 #'   library(terra)
 #'   library(sf)
 #'   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-#'   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+#'   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
 #'   reg_inh = reg_inhomogeneity(vr, volcano, sample_size = 0.5)
 #'
 #'   mean(reg_inh$inh)
@@ -36,8 +41,8 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
     inh[i] = mean(philentropy::distance(vals_i, method = dist_fun,
                                         as.dist.obj = TRUE, mute.message = TRUE))
   }
-  region$inh = inh
-  return(region)
+  # region$inh = inh
+  return(inh)
 }
 
 

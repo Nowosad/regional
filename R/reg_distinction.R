@@ -1,9 +1,13 @@
-#' Title
+#' Distinction
 #'
-#' @param region
-#' @param raster
-#' @param dist_fun
-#' @param sample_size
+#' Distinction is an average distance between the focus region and all of the other regions.
+#' This value is between 0 and 1, where large value indicates that the values in the region
+#' stands out from the other regions.
+#'
+#' @param region An object of class `sf` with a `POLYGON` or `MULTIPOLYGON` geometry type
+#' @param raster An object of class SpatRaster (terra)
+#' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function in the background. Run `philentropy::getDistMethods()` to find possible distance measures.
+#' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 #'
 #' @return
 #' @export
@@ -13,7 +17,7 @@
 #'   library(terra)
 #'   library(sf)
 #'   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-#'   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+#'   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
 #'   reg_dis = reg_distinction(vr, volcano, sample_size = 0.5)
 #'
 #'   mean(reg_dis$dis)
@@ -46,8 +50,8 @@ reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size =
     }
     dis[i] = sum_dist / n_elem
   }
-  region$dis = dis
-  return(region)
+  # region$dis = dis
+  return(dis)
 }
 
 # reg_distinction0 = function(region, raster, dist_fun = "euclidean", sample_size = 20) {
@@ -108,7 +112,7 @@ reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size =
 # library(terra)
 # library(sf)
 # volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-# vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "laland"))
+# vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
 # reg_inh = reg_distinction(vr, volcano)
 #
 # bench::mark(

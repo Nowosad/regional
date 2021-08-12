@@ -2,18 +2,27 @@
 % Please edit documentation in R/reg_isolation.R
 \name{reg_isolation}
 \alias{reg_isolation}
-\title{Title}
+\title{Isolation}
 \usage{
 reg_isolation(region, raster, dist_fun = "euclidean", sample_size = 1)
 }
 \arguments{
-\item{sample_size}{}
+\item{region}{An object of class \code{sf} with a \code{POLYGON} or \code{MULTIPOLYGON} geometry type}
+
+\item{raster}{An object of class SpatRaster (terra)}
+
+\item{dist_fun}{Distance measure used. This function uses the \code{philentropy::distance} function in the background. Run \code{philentropy::getDistMethods()} to find possible distance measures.}
+
+\item{sample_size}{Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.}
 }
 \value{
 
 }
 \description{
-Title
+Isolation is an average distance between the focus region
+and all of its neighbors. This value is between 0 and 1,
+where large value indicates that values of the region
+stands out from its surroundings.
 }
 \examples{
 \dontrun{
