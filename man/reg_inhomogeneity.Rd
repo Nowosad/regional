@@ -30,13 +30,13 @@ represent consistent patterns so the cluster is pattern-homogeneous.
   library(sf)
   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
-  volcano$inh = reg_inhomogeneity(vr, volcano, sample_size = 0.5)
+  vr$inh = reg_inhomogeneity(vr, volcano, sample_size = 1)
 
-  mean(volcano$inh)
+  mean(vr$inh)
 
   plot(volcano)
   plot(vect(vr), add = TRUE)
   plot(volcano)
-  plot(volcano["inh"], add = TRUE)
+  plot(vr["inh"], add = TRUE)
 }
 }

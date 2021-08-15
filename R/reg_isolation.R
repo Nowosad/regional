@@ -45,7 +45,7 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
       if (sample_size < 1){
         vals_j = vals_j[sample(nrow(vals_j), size = sample_size * nrow(vals_j)), , drop = FALSE]
       }
-      dist_mat = philentropy:::dist_many_many(vals_i, vals_j,
+      dist_mat = philentropy::dist_many_many(vals_i, vals_j,
                                               dist_fun = dist_fun,
                                               FALSE, "")
       sum_dist = sum_dist + sum(dist_mat)
