@@ -25,6 +25,6 @@ Suggests:
     sf,
     testthat (>= 3.0.0)
 Remotes:
-    drostlab/philentropy#27,
+    nowosad/philentropy@cpp_extend,
     nowosad/supercells
 Config/testthat/edition: 3
