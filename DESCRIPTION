@@ -1,6 +1,6 @@
 Package: regional
 Title: Intra- and Inter-Regional Similarity
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person(given = "Jakub", family = "Nowosad", 
     role = c("aut", "cre"),
@@ -25,6 +25,6 @@ Suggests:
     sf,
     testthat (>= 3.0.0)
 Remotes:
-    nowosad/philentropy@cpp_extend,
+    drostlab/philentropy,
     nowosad/supercells
 Config/testthat/edition: 3
