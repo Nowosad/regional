@@ -21,11 +21,8 @@ inhomogeneity, isolation (Haralick and Shapiro (1985)
 ## Installation
 
 <!-- You can install the released version of regional from [CRAN](https://CRAN.R-project.org) with: -->
-
 <!-- ``` r -->
-
 <!-- install.packages("regional") -->
-
 <!-- ``` -->
 
 You can install the development version from
@@ -64,7 +61,7 @@ plot(vr["inh"], add = TRUE)
 
 ``` r
 mean(vr$inh)
-#> [1] 2.737488
+#> [1] 2.731923
 ```
 
 ### Isolation

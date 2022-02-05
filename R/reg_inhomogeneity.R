@@ -39,7 +39,7 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
       vals_i = vals_i[sample(nrow(vals_i), size = max(sample_size * nrow(vals_i), 3), replace = TRUE), , drop = FALSE]
     }
     inh[i] = mean(philentropy::distance(vals_i, method = dist_fun,
-                                        as.dist.obj = TRUE, mute.message = TRUE))
+                                        as.dist.obj = TRUE, mute.message = TRUE, unit = "log2"))
   }
   # region$inh = inh
   return(inh)

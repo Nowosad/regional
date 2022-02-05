@@ -1,6 +1,6 @@
 Package: regional
 Title: Intra- and Inter-Regional Similarity
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person(given = "Jakub", family = "Nowosad", 
     role = c("aut", "cre"),
@@ -16,7 +16,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: 
     philentropy (>= 0.6.0.9000),
     terra
