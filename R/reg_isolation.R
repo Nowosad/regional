@@ -9,6 +9,8 @@
 #' @param raster An object of class SpatRaster (terra)
 #' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function in the background. Run `philentropy::getDistMethods()` to find possible distance measures.
 #' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
+#' It is also possible to specify an integer larger than 1, in which case the specified number of cells
+#' of each region will be used in calculations.
 #'
 #' @return A vector with the isolation values
 #' @export
@@ -38,22 +40,27 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
     vals_i = as.matrix(terra::extract(raster, v[i])[-1])
     if (sample_size < 1){
       vals_i = vals_i[sample(nrow(vals_i), size = sample_size * nrow(vals_i)), , drop = FALSE]
+    } else if (sample_size > 1) {
+      vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
     }
     neigh_id = which(terra::relate(v, v[i], relation = "touches"))
     for (j in neigh_id){
       vals_j = as.matrix(terra::extract(raster, v[j])[-1])
       if (sample_size < 1){
         vals_j = vals_j[sample(nrow(vals_j), size = sample_size * nrow(vals_j)), , drop = FALSE]
+      } else if (sample_size > 1) {
+        vals_j = vals_j[sample(nrow(vals_j), size = min(c(nrow(vals_j), sample_size))), , drop = FALSE]
       }
       dist_mat = philentropy::dist_many_many(vals_i, vals_j,
                                              method = dist_fun,
-                                             testNA = FALSE, unit = "log2")
+                                             testNA = FALSE, unit = "log")
       sum_dist = sum_dist + sum(dist_mat)
       n_elem = n_elem + length(dist_mat)
       # cat(" j:", j)
     }
     # cat("\n", "i:", i)
     iso[i] = sum_dist/n_elem
+    # iso[i] = ifelse(sum_dist == 0 & n_elem == 0, 0, sum_dist/n_elem)
   }
   # region$iso = iso
   return(iso)

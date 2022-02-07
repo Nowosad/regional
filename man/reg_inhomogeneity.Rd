@@ -13,7 +13,9 @@ reg_inhomogeneity(region, raster, dist_fun = "euclidean", sample_size = 1)
 
 \item{dist_fun}{Distance measure used. This function uses the \code{philentropy::distance} function in the background. Run \code{philentropy::getDistMethods()} to find possible distance measures.}
 
-\item{sample_size}{Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.}
+\item{sample_size}{Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
+It is also possible to specify an integer larger than 1, in which case the specified number of cells
+of each region will be used in calculations.}
 }
 \value{
 A vector with the inhomogeneity values

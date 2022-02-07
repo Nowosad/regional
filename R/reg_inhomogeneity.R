@@ -9,6 +9,8 @@
 #' @param raster An object of class SpatRaster (terra)
 #' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function in the background. Run `philentropy::getDistMethods()` to find possible distance measures.
 #' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
+#' It is also possible to specify an integer larger than 1, in which case the specified number of cells
+#' of each region will be used in calculations.
 #'
 #' @return A vector with the inhomogeneity values
 #' @export
@@ -37,6 +39,8 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
     vals_i = as.matrix(terra::extract(raster, v[i])[-1])
     if (sample_size < 1){
       vals_i = vals_i[sample(nrow(vals_i), size = max(sample_size * nrow(vals_i), 3), replace = TRUE), , drop = FALSE]
+    } else if (sample_size > 1) {
+      vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
     }
     inh[i] = mean(philentropy::distance(vals_i, method = dist_fun,
                                         as.dist.obj = TRUE, mute.message = TRUE, unit = "log2"))
