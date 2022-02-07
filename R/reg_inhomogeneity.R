@@ -11,6 +11,8 @@
 #' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 #' It is also possible to specify an integer larger than 1, in which case the specified number of cells
 #' of each region will be used in calculations.
+#' @param unit a character string specifying the logarithm unit that should be used to
+#' compute distances that depend on log computations.
 #'
 #' @return A vector with the inhomogeneity values
 #' @export
@@ -30,7 +32,7 @@
 #'   plot(volcano)
 #'   plot(vr["inh"], add = TRUE)
 #' }
-reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size = 1) {
+reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2") {
   v = terra::vect(region)
   inh = vector(mode = "numeric", length = length(v))
   for (i in seq_len(length(v))){
@@ -43,7 +45,8 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
       vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
     }
     inh[i] = mean(philentropy::distance(vals_i, method = dist_fun,
-                                        as.dist.obj = TRUE, mute.message = TRUE, unit = "log2"))
+                                        as.dist.obj = TRUE, mute.message = TRUE,
+                                        unit = unit))
   }
   # region$inh = inh
   return(inh)

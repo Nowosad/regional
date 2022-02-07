@@ -4,7 +4,13 @@
 \alias{reg_distinction}
 \title{Distinction}
 \usage{
-reg_distinction(region, raster, dist_fun = "euclidean", sample_size = 1)
+reg_distinction(
+  region,
+  raster,
+  dist_fun = "euclidean",
+  sample_size = 1,
+  unit = "log2"
+)
 }
 \arguments{
 \item{region}{An object of class \code{sf} with a \code{POLYGON} or \code{MULTIPOLYGON} geometry type}
@@ -16,6 +22,9 @@ reg_distinction(region, raster, dist_fun = "euclidean", sample_size = 1)
 \item{sample_size}{Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 It is also possible to specify an integer larger than 1, in which case the specified number of cells
 of each region will be used in calculations.}
+
+\item{unit}{a character string specifying the logarithm unit that should be used to
+compute distances that depend on log computations.}
 }
 \value{
 A vector with the distinction values

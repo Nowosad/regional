@@ -11,6 +11,8 @@
 #' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 #' It is also possible to specify an integer larger than 1, in which case the specified number of cells
 #' of each region will be used in calculations.
+#' @param unit a character string specifying the logarithm unit that should be used to
+#' compute distances that depend on log computations.
 #'
 #' @return A vector with the isolation values
 #' @export
@@ -30,7 +32,7 @@
 #'  plot(volcano)
 #'  plot(vr["iso"], add = TRUE)
 #'}
-reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1) {
+reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2") {
   # set.seed(32)
   v = terra::vect(region)
   iso = vector(mode = "numeric", length = length(v))
@@ -53,7 +55,7 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
       }
       dist_mat = philentropy::dist_many_many(vals_i, vals_j,
                                              method = dist_fun,
-                                             testNA = FALSE, unit = "log")
+                                             testNA = FALSE, unit = unit)
       sum_dist = sum_dist + sum(dist_mat)
       n_elem = n_elem + length(dist_mat)
       # cat(" j:", j)
