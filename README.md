@@ -5,9 +5,13 @@
 
 <!-- badges: start -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/regional)](https://CRAN.R-project.org/package=regional)
 [![R-CMD-check](https://github.com/Nowosad/regional/workflows/R-CMD-check/badge.svg)](https://github.com/Nowosad/regional/actions)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test
+coverage](https://codecov.io/gh/Nowosad/regional/branch/master/graph/badge.svg)](https://codecov.io/gh/Nowosad/regional?branch=master)
+[![CRAN RStudio mirror
+downloads](http://cranlogs.r-pkg.org/badges/regional)](https://cran.r-project.org/package=regional)
 <!-- badges: end -->
 
 The **regional** package calculates intra-regional and inter-regional
@@ -21,10 +25,12 @@ distinction (Nowosad (2021),
 
 ## Installation
 
-<!-- You can install the released version of regional from [CRAN](https://CRAN.R-project.org) with: -->
-<!-- ``` r -->
-<!-- install.packages("regional") -->
-<!-- ``` -->
+You can install the released version of regional from
+[CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("regional")
+```
 
 You can install the development version from
 [GitHub](https://github.com/) with:
@@ -62,7 +68,7 @@ plot(vr["inh"], add = TRUE)
 
 ``` r
 mean(vr$inh)
-#> [1] 2.700571
+#> [1] 2.748662
 ```
 
 ### Isolation

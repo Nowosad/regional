@@ -4,3 +4,5 @@
 ^LICENSE\.md$
 ^\.github$
 ^data-raw$
+^CRAN-RELEASE$
+^codecov\.yml$
