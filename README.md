@@ -46,7 +46,7 @@ remotes::install_github("Nowosad/regional")
 library(regional)
 library(terra)
 library(sf)
-volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
+volcano = rast(system.file("raster/volcano.tif", package = "regional"))
 vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
 plot(volcano)
 plot(vect(vr), add = TRUE)
@@ -68,7 +68,7 @@ plot(vr["inh"], add = TRUE)
 
 ``` r
 mean(vr$inh)
-#> [1] 2.748662
+#> [1] 2.735069
 ```
 
 ### Isolation
