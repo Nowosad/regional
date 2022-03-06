@@ -8,6 +8,13 @@
 \description{
 Calculates intra-regional and inter-regional similarities based on user-provided spatial vector objects (regions) and spatial raster objects (cells with values). Implemented metrics include inhomogeneity, isolation (Haralick and Shapiro (1985) <doi:10.1016/S0734-189X(85)90153-7>, Jasiewicz et al. (2018) <doi:10.1016/j.cageo.2018.06.003>), and distinction (Nowosad (2021) <doi:10.1080/13658816.2021.1893324>).
 }
+\seealso{
+Useful links:
+\itemize{
+  \item Report bugs at \url{https://github.com/Nowosad/regional/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Jakub Nowosad \email{nowosad.jakub@gmail.com} (\href{https://orcid.org/0000-0002-1057-3721}{ORCID})
 

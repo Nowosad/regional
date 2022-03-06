@@ -19,17 +19,19 @@
 #' @examples
 #' \dontrun{
 #'   library(terra)
-#'   library(sf)
-#'   volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
-#'   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
-#'   vr$dis = reg_distinction(vr, volcano, sample_size = 0.5)
+#'   if (requireNamespace("sf", quietly = TRUE)) {
+#'     library(sf)
+#'     volcano = rast(system.file("raster/volcano.tif", package = "regional"))
+#'     vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
+#'     vr$dis = reg_distinction(vr, volcano, sample_size = 0.5)
 #'
-#'   mean(reg_dis$dis)
+#'     mean(reg_dis$dis)
 #'
-#'   plot(volcano)
-#'   plot(vect(vr), add = TRUE)
-#'   plot(volcano)
-#'   plot(vr["dis"], add = TRUE)
+#'     plot(volcano)
+#'     plot(vect(vr), add = TRUE)
+#'     plot(volcano)
+#'     plot(vr["dis"], add = TRUE)
+#'  }
 #' }
 reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2") {
   # set.seed(32)

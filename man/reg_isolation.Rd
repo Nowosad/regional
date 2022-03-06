@@ -38,16 +38,18 @@ stands out from its surroundings.
 \examples{
 \dontrun{
  library(terra)
- library(sf)
- volcano = rast(system.file("raster/volcano.tif", package = "supercells"))
- vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
- vr$iso = reg_isolation(vr, volcano, sample_size = 1)
+ if (requireNamespace("sf", quietly = TRUE)) {
+   library(sf)
+   volcano = rast(system.file("raster/volcano.tif", package = "regional"))
+   vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
+   vr$iso = reg_isolation(vr, volcano, sample_size = 1)
 
- mean(volcano$iso)
+   mean(volcano$iso)
 
- plot(volcano)
- plot(vect(vr), add = TRUE)
- plot(volcano)
- plot(vr["iso"], add = TRUE)
+   plot(volcano)
+   plot(vect(vr), add = TRUE)
+   plot(volcano)
+   plot(vr["iso"], add = TRUE)
+ }
 }
 }
