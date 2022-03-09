@@ -25,7 +25,7 @@
 #'     vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
 #'     vr$dis = reg_distinction(vr, volcano, sample_size = 0.5)
 #'
-#'     mean(reg_dis$dis)
+#'     mean(vr$dis)
 #'
 #'     plot(volcano)
 #'     plot(vect(vr), add = TRUE)
