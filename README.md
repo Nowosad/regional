@@ -9,7 +9,7 @@
 status](https://www.r-pkg.org/badges/version/regional)](https://CRAN.R-project.org/package=regional)
 [![R-CMD-check](https://github.com/Nowosad/regional/workflows/R-CMD-check/badge.svg)](https://github.com/Nowosad/regional/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/Nowosad/regional/branch/master/graph/badge.svg)](https://codecov.io/gh/Nowosad/regional?branch=master)
+coverage](https://codecov.io/gh/Nowosad/regional/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Nowosad/regional?branch=master)
 [![CRAN RStudio mirror
 downloads](http://cranlogs.r-pkg.org/badges/regional)](https://cran.r-project.org/package=regional)
 <!-- badges: end -->
@@ -68,7 +68,7 @@ plot(vr["inh"], add = TRUE)
 
 ``` r
 mean(vr$inh)
-#> [1] 2.735069
+#> [1] 2.746237
 ```
 
 ### Isolation
