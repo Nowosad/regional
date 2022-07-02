@@ -9,7 +9,8 @@ reg_inhomogeneity(
   raster,
   dist_fun = "euclidean",
   sample_size = 1,
-  unit = "log2"
+  unit = "log2",
+  ...
 )
 }
 \arguments{

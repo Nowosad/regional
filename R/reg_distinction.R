@@ -33,7 +33,7 @@
 #'     plot(vr["dis"], add = TRUE)
 #'  }
 #' }
-reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2") {
+reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", ...) {
   # set.seed(32)
   v = terra::vect(region)
   dis = vector(mode = "numeric", length = length(v))
@@ -54,7 +54,7 @@ reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size =
       } else if (sample_size > 1) {
         vals_j = vals_j[sample(nrow(vals_j), size = min(c(nrow(vals_j), sample_size))), , drop = FALSE]
       }
-      dist_mat = philentropy::dist_many_many(vals_i, vals_j, method = dist_fun, testNA = FALSE, unit = unit)
+      dist_mat = universal_dist_many_many(vals_i, vals_j, dist_fun = dist_fun, ...)
       sum_dist = sum_dist + sum(dist_mat)
       n_elem = n_elem + length(dist_mat)
     }

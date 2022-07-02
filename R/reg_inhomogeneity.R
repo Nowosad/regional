@@ -34,7 +34,7 @@
 #'     plot(vr["inh"], add = TRUE)
 #'  }
 #' }
-reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2") {
+reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", ...) {
   v = terra::vect(region)
   inh = vector(mode = "numeric", length = length(v))
   for (i in seq_len(length(v))){
@@ -46,9 +46,7 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
     } else if (sample_size > 1) {
       vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
     }
-    inh[i] = mean(philentropy::distance(vals_i, method = dist_fun,
-                                        as.dist.obj = TRUE, mute.message = TRUE,
-                                        unit = unit))
+    inh[i] = mean(universal_distance(vals_i, dist_fun = dist_fun, ...))
   }
   # region$inh = inh
   return(inh)

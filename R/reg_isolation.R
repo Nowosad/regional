@@ -26,7 +26,7 @@
 #'    vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
 #'    vr$iso = reg_isolation(vr, volcano, sample_size = 1)
 #'
-#'    mean(volcano$iso)
+#'    mean(vr$iso)
 #'
 #'    plot(volcano)
 #'    plot(vect(vr), add = TRUE)
@@ -34,7 +34,7 @@
 #'    plot(vr["iso"], add = TRUE)
 #'  }
 #'}
-reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2") {
+reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", ...) {
   # set.seed(32)
   v = terra::vect(region)
   iso = vector(mode = "numeric", length = length(v))
@@ -55,9 +55,7 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
       } else if (sample_size > 1) {
         vals_j = vals_j[sample(nrow(vals_j), size = min(c(nrow(vals_j), sample_size))), , drop = FALSE]
       }
-      dist_mat = philentropy::dist_many_many(vals_i, vals_j,
-                                             method = dist_fun,
-                                             testNA = FALSE, unit = unit)
+      dist_mat = universal_dist_many_many(vals_i, vals_j, dist_fun = dist_fun, ...)
       sum_dist = sum_dist + sum(dist_mat)
       n_elem = n_elem + length(dist_mat)
       # cat(" j:", j)
