@@ -5,13 +5,13 @@ universal_distance = function(x, dist_fun, ndim, ...){
   } else if (requireNamespace("proxy", quietly = TRUE) && dist_fun %in% names(summary(proxy::pr_DB)$names)) {
     di = as.vector(proxy::dist(x, method = dist_fun, auto_convert_data_frames = FALSE, ...))
   } else if (requireNamespace("dtwclust", quietly = TRUE) && dist_fun == "dtw"){
-    di = dtw_dist(x, y, ndim = ndim, ...)
+    di = dtw_dist(x, ndim = ndim, ...)
   }
   return(di)
 }
 dtw_dist = function(x, ndim, ...){
   x_list = split.data.frame(x, seq_len(nrow(x)))
-  x_list = lapply(x_list, function(x, ndim) matrix(as.vector(x), ncol = ndim), ndim = 2)
+  x_list = lapply(x_list, function(x, ndim) matrix(as.vector(x), ncol = ndim), ndim = ndim)
   proxy::dist(x_list, method = "dtw_basic", ...)
 }
 
