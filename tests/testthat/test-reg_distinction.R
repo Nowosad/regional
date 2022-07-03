@@ -17,3 +17,5 @@ test_that("reg_distinction works for 3D data", {
 # reg_dis2 = reg_distinction(vo, ortho, sample_size = 50)
 # plot(ortho)
 # plot(reg_dis2["dis"], add = TRUE)
+
+
