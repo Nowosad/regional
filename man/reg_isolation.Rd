@@ -18,7 +18,8 @@ reg_isolation(
 
 \item{raster}{An object of class SpatRaster (terra)}
 
-\item{dist_fun}{Distance measure used. This function uses the \code{philentropy::distance} function in the background. Run \code{philentropy::getDistMethods()} to find possible distance measures.}
+\item{dist_fun}{Distance measure used. This function uses \code{philentropy::distance} (run \code{philentropy::getDistMethods()} to find possible distance measures) or \code{proxy::dist} (run \code{names(proxy::pr_DB$get_entries())} to find possible distance measures) in the background.
+It is also possible to use \code{"dtw"} (dynamic time warping)}
 
 \item{sample_size}{Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 It is also possible to specify an integer larger than 1, in which case the specified number of cells
@@ -26,6 +27,9 @@ of each region will be used in calculations.}
 
 \item{unit}{a character string specifying the logarithm unit that should be used to
 compute distances that depend on log computations.}
+
+\item{...}{Additional arguments for \code{philentropy::dist_one_one}, \code{proxy::dist}, or \code{dtwclust::dtw_basic}.
+When \code{dist_fun = "dtw"} is used, \code{ndim} should be set to specify how many dimension the input raster time-series has.}
 }
 \value{
 A vector with the isolation values
@@ -45,7 +49,7 @@ stands out from its surroundings.
    vr = read_sf(system.file("regions/volcano_regions.gpkg", package = "regional"))
    vr$iso = reg_isolation(vr, volcano, sample_size = 1)
 
-   mean(volcano$iso)
+   mean(vr$iso)
 
    plot(volcano)
    plot(vect(vr), add = TRUE)

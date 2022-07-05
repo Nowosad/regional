@@ -6,12 +6,15 @@
 #'
 #' @param region An object of class `sf` with a `POLYGON` or `MULTIPOLYGON` geometry type
 #' @param raster An object of class SpatRaster (terra)
-#' @param dist_fun Distance measure used. This function uses the `philentropy::distance` function in the background. Run `philentropy::getDistMethods()` to find possible distance measures.
+#' @param dist_fun Distance measure used. This function uses `philentropy::distance` (run `philentropy::getDistMethods()` to find possible distance measures) or `proxy::dist` (run `names(proxy::pr_DB$get_entries())` to find possible distance measures) in the background.
+#' It is also possible to use `"dtw"` (dynamic time warping)
 #' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 #' It is also possible to specify an integer larger than 1, in which case the specified number of cells
 #' of each region will be used in calculations.
 #' @param unit a character string specifying the logarithm unit that should be used to
 #' compute distances that depend on log computations.
+#' @param ... Additional arguments for `philentropy::dist_one_one`, `proxy::dist`, or `dtwclust::dtw_basic`.
+#' When `dist_fun = "dtw"` is used, `ndim` should be set to specify how many dimension the input raster time-series has.
 #'
 #' @return A vector with the distinction values
 #' @export
