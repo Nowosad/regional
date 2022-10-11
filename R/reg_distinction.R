@@ -44,14 +44,14 @@ reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size =
   for (i in seq_len(length(v))){
     sum_dist = 0
     n_elem = 0
-    vals_i = as.matrix(terra::extract(raster, v[i])[-1])
+    vals_i = as.matrix(terra::extract(raster, v[i], ID = FALSE))
     if (sample_size < 1){
       vals_i = vals_i[sample(nrow(vals_i), size = sample_size * nrow(vals_i)), , drop = FALSE]
     } else if (sample_size > 1) {
       vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
     }
     for (j in setdiff(seq_len(length(v)), i)){
-      vals_j = as.matrix(terra::extract(raster, v[j])[-1])
+      vals_j = as.matrix(terra::extract(raster, v[j], ID = FALSE))
       if (sample_size < 1){
         vals_j = vals_j[sample(nrow(vals_j), size = sample_size * nrow(vals_j)), , drop = FALSE]
       } else if (sample_size > 1) {
