@@ -50,7 +50,8 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
     } else if (sample_size > 1) {
       vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
     }
-    neigh_id = which(terra::relate(v, v[i], relation = "touches"))
+    neigh_id = which(terra::is.related(v, v[i], relation = "intersects"))
+    neigh_id = neigh_id[neigh_id != i]
     if (length(neigh_id) == 0){
       iso[i] = NA
     } else {
