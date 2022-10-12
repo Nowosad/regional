@@ -19,7 +19,7 @@ stands out from the other regions."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">regional</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -54,54 +54,72 @@ stands out from the other regions.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">reg_distinction</span><span class="op">(</span>
-  <span class="va">region</span>,
-  <span class="va">raster</span>,
-  dist_fun <span class="op">=</span> <span class="st">"euclidean"</span>,
-  sample_size <span class="op">=</span> <span class="fl">1</span>,
-  unit <span class="op">=</span> <span class="st">"log2"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reg_distinction</span><span class="op">(</span></span>
+<span>  <span class="va">region</span>,</span>
+<span>  <span class="va">raster</span>,</span>
+<span>  dist_fun <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
+<span>  sample_size <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  unit <span class="op">=</span> <span class="st">"log2"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>region</dt>
 <dd><p>An object of class <code>sf</code> with a <code>POLYGON</code> or <code>MULTIPOLYGON</code> geometry type</p></dd>
+
+
 <dt>raster</dt>
 <dd><p>An object of class SpatRaster (terra)</p></dd>
+
+
 <dt>dist_fun</dt>
-<dd><p>Distance measure used. This function uses the <code><a href="https://rdrr.io/pkg/philentropy/man/distance.html" class="external-link">philentropy::distance</a></code> function in the background. Run <code><a href="https://rdrr.io/pkg/philentropy/man/getDistMethods.html" class="external-link">philentropy::getDistMethods()</a></code> to find possible distance measures.</p></dd>
+<dd><p>Distance measure used. This function uses <code><a href="https://rdrr.io/pkg/philentropy/man/distance.html" class="external-link">philentropy::distance</a></code> (run <code><a href="https://rdrr.io/pkg/philentropy/man/getDistMethods.html" class="external-link">philentropy::getDistMethods()</a></code> to find possible distance measures) or <code>proxy::dist</code> (run <code>names(proxy::pr_DB$get_entries())</code> to find possible distance measures) in the background.
+It is also possible to use <code>"dtw"</code> (dynamic time warping)</p></dd>
+
+
 <dt>sample_size</dt>
 <dd><p>Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 It is also possible to specify an integer larger than 1, in which case the specified number of cells
 of each region will be used in calculations.</p></dd>
+
+
 <dt>unit</dt>
 <dd><p>a character string specifying the logarithm unit that should be used to
 compute distances that depend on log computations.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Additional arguments for <code><a href="https://rdrr.io/pkg/philentropy/man/dist_one_one.html" class="external-link">philentropy::dist_one_one</a></code>, <code>proxy::dist</code>, or <code><a href="https://rdrr.io/pkg/dtwclust/man/dtw_basic.html" class="external-link">dtwclust::dtw_basic</a></code>.
+When <code>dist_fun = "dtw"</code> is used, <code>ndim</code> should be set to specify how many dimension the input raster time-series has.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A vector with the distinction values</p>
+    
+
+<p>A vector with the distinction values</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span class="r-in">  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"sf"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">volcano</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"raster/volcano.tif"</span>, package <span class="op">=</span> <span class="st">"regional"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">vr</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"regions/volcano_regions.gpkg"</span>, package <span class="op">=</span> <span class="st">"regional"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">vr</span><span class="op">$</span><span class="va">dis</span> <span class="op">=</span> <span class="fu">reg_distinction</span><span class="op">(</span><span class="va">vr</span>, <span class="va">volcano</span>, sample_size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">vr</span><span class="op">$</span><span class="va">dis</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">vr</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">vr</span><span class="op">[</span><span class="st">"dis"</span><span class="op">]</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"> <span class="op">}</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"sf"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">volcano</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"raster/volcano.tif"</span>, package <span class="op">=</span> <span class="st">"regional"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">vr</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"regions/volcano_regions.gpkg"</span>, package <span class="op">=</span> <span class="st">"regional"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">vr</span><span class="op">$</span><span class="va">dis</span> <span class="op">=</span> <span class="fu">reg_distinction</span><span class="op">(</span><span class="va">vr</span>, <span class="va">volcano</span>, sample_size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">vr</span><span class="op">$</span><span class="va">dis</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">vr</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">vr</span><span class="op">[</span><span class="st">"dis"</span><span class="op">]</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -116,7 +134,7 @@ compute distances that depend on log computations.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
