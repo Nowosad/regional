@@ -18,7 +18,7 @@ The **regional** package calculates intra-regional and inter-regional
 similarities based on user-provided spatial vector objects (regions) and
 spatial raster objects (cells with values). Implemented metrics include
 inhomogeneity, isolation (Haralick and Shapiro (1985),
-<https://doi.org/10.1016/S0734-189X(85)90153-7>\>, Jasiewicz et
+<https://doi.org/10.1016/S0734-189X(85)90153-7>, Jasiewicz et
 al. (2018), <https://doi.org/10.1016/j.cageo.2018.06.003>), and
 distinction (Nowosad (2021),
 <https://doi.org/10.1080/13658816.2021.1893324>).
@@ -68,7 +68,7 @@ plot(vr["inh"], add = TRUE)
 
 ``` r
 mean(vr$inh)
-#> [1] 2.746237
+#> [1] 2.732731
 ```
 
 ### Isolation
