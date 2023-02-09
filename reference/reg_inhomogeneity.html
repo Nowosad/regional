@@ -20,7 +20,7 @@ represent consistent patterns so the cluster is pattern-homogeneous."><!-- mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">regional</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -62,6 +62,7 @@ represent consistent patterns so the cluster is pattern-homogeneous.</p>
 <span>  dist_fun <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
 <span>  sample_size <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  unit <span class="op">=</span> <span class="st">"log2"</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -88,8 +89,12 @@ of each region will be used in calculations.</p></dd>
 
 
 <dt>unit</dt>
-<dd><p>a character string specifying the logarithm unit that should be used to
+<dd><p>A character string specifying the logarithm unit that should be used to
 compute distances that depend on log computations.</p></dd>
+
+
+<dt>na.rm</dt>
+<dd><p>Whether NA values should be stripped from the calculations.</p></dd>
 
 
 <dt>...</dt>
@@ -136,7 +141,7 @@ When <code>dist_fun = "dtw"</code> is used, <code>ndim</code> should be set to s
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
