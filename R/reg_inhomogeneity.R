@@ -12,8 +12,9 @@
 #' @param sample_size Proportion of the cells inside of each region to be used in calculations. Value between 0 and 1.
 #' It is also possible to specify an integer larger than 1, in which case the specified number of cells
 #' of each region will be used in calculations.
-#' @param unit a character string specifying the logarithm unit that should be used to
+#' @param unit A character string specifying the logarithm unit that should be used to
 #' compute distances that depend on log computations.
+#' @param na.rm Whether NA values should be stripped from the calculations.
 #' @param ... Additional arguments for `philentropy::dist_one_one`, `proxy::dist`, or `dtwclust::dtw_basic`.
 #' When `dist_fun = "dtw"` is used, `ndim` should be set to specify how many dimension the input raster time-series has.
 #'
@@ -37,7 +38,7 @@
 #'     plot(vr["inh"], add = TRUE)
 #'  }
 #' }
-reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", ...) {
+reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
   v = terra::vect(region)
   inh = vector(mode = "numeric", length = length(v))
   for (i in seq_len(length(v))){
@@ -49,7 +50,7 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
     } else if (sample_size > 1) {
       vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
     }
-    inh[i] = mean(universal_distance(vals_i, dist_fun = dist_fun, ...))
+    inh[i] = mean(universal_distance(vals_i, dist_fun = dist_fun, ...), na.rm = na.rm)
   }
   # region$inh = inh
   return(inh)

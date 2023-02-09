@@ -1,6 +1,6 @@
 Package: regional
 Title: Intra- and Inter-Regional Similarity
-Version: 0.4.1
+Version: 0.4.2
 Authors@R: c(
     person(given = "Jakub", family = "Nowosad", 
     role = c("aut", "cre"),
@@ -15,7 +15,7 @@ Description: Calculates intra-regional and inter-regional similarities based on 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports: 
     philentropy (>= 0.6.0),
     terra
