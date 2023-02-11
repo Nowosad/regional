@@ -10,6 +10,7 @@ reg_isolation(
   dist_fun = "euclidean",
   sample_size = 1,
   unit = "log2",
+  na.rm = FALSE,
   ...
 )
 }
@@ -27,6 +28,8 @@ of each region will be used in calculations.}
 
 \item{unit}{a character string specifying the logarithm unit that should be used to
 compute distances that depend on log computations.}
+
+\item{na.rm}{Whether NA values should be stripped from the calculations.}
 
 \item{...}{Additional arguments for \code{philentropy::dist_one_one}, \code{proxy::dist}, or \code{dtwclust::dtw_basic}.
 When \code{dist_fun = "dtw"} is used, \code{ndim} should be set to specify how many dimension the input raster time-series has.}

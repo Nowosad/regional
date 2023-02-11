@@ -14,6 +14,7 @@
 #' of each region will be used in calculations.
 #' @param unit a character string specifying the logarithm unit that should be used to
 #' compute distances that depend on log computations.
+#' @param na.rm Whether NA values should be stripped from the calculations.
 #' @param ... Additional arguments for `philentropy::dist_one_one`, `proxy::dist`, or `dtwclust::dtw_basic`.
 #' When `dist_fun = "dtw"` is used, `ndim` should be set to specify how many dimension the input raster time-series has.
 #'
@@ -37,7 +38,7 @@
 #'    plot(vr["iso"], add = TRUE)
 #'  }
 #'}
-reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", ...) {
+reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
   # set.seed(32)
   v = terra::vect(region)
   iso = vector(mode = "numeric", length = length(v))
@@ -62,9 +63,13 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
         } else if (sample_size > 1) {
           vals_j = vals_j[sample(nrow(vals_j), size = min(c(nrow(vals_j), sample_size))), , drop = FALSE]
         }
-        dist_mat = universal_dist_many_many(vals_i, vals_j, dist_fun = dist_fun)
-        sum_dist = sum_dist + sum(dist_mat)
-        n_elem = n_elem + length(dist_mat)
+        dist_mat = universal_dist_many_many(vals_i, vals_j, dist_fun = dist_fun, ...)
+        sum_dist = sum_dist + sum(dist_mat, na.rm = na.rm)
+        if (na.rm){
+          n_elem = n_elem + sum(!is.na(dist_mat))
+        } else {
+          n_elem = n_elem + length(dist_mat)
+        }
         # cat(" j:", j)
       }
       # cat("\n", "i:", i)
