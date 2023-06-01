@@ -45,7 +45,7 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
   for (i in seq_len(length(v))){
     sum_dist = 0
     n_elem = 0
-    vals_i = as.matrix(terra::extract(raster, v[i], ID = FALSE))
+    vals_i = terra::extract(raster, v[i], ID = FALSE, raw = TRUE)
     if (sample_size < 1){
       vals_i = vals_i[sample(nrow(vals_i), size = sample_size * nrow(vals_i)), , drop = FALSE]
     } else if (sample_size > 1) {
@@ -57,7 +57,7 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
       iso[i] = NA
     } else {
       for (j in neigh_id){
-        vals_j = as.matrix(terra::extract(raster, v[j], ID = FALSE))
+        vals_j = terra::extract(raster, v[j], ID = FALSE, raw = TRUE)
         if (sample_size < 1){
           vals_j = vals_j[sample(nrow(vals_j), size = sample_size * nrow(vals_j)), , drop = FALSE]
         } else if (sample_size > 1) {
@@ -80,6 +80,8 @@ reg_isolation = function(region, raster, dist_fun = "euclidean", sample_size = 1
   # region$iso = iso
   return(iso)
 }
+
+
 
 # #' @export
 # reg_isolation0 = function(region, raster, dist_fun = "euclidean", sample_size = 20) {

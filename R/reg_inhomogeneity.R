@@ -44,7 +44,7 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
   for (i in seq_len(length(v))){
     # https://github.com/rspatial/terra/issues/275
     # terra::extract(volcano, vect(vr[i, ]), exact = FALSE)
-    vals_i = as.matrix(terra::extract(raster, v[i], ID = FALSE))
+    vals_i = terra::extract(raster, v[i], ID = FALSE, raw = TRUE)
     if (sample_size < 1){
       vals_i = vals_i[sample(nrow(vals_i), size = max(sample_size * nrow(vals_i), 3), replace = TRUE), , drop = FALSE]
     } else if (sample_size > 1) {
