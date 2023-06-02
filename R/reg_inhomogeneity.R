@@ -42,8 +42,6 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
   v = terra::vect(region)
   inh = vector(mode = "numeric", length = length(v))
   for (i in seq_len(length(v))){
-    # https://github.com/rspatial/terra/issues/275
-    # terra::extract(volcano, vect(vr[i, ]), exact = FALSE)
     vals_i = terra::extract(raster, v[i], ID = FALSE, raw = TRUE)
     if (sample_size < 1){
       vals_i = vals_i[sample(nrow(vals_i), size = max(sample_size * nrow(vals_i), 3), replace = TRUE), , drop = FALSE]
@@ -52,16 +50,76 @@ reg_inhomogeneity = function(region, raster, dist_fun = "euclidean", sample_size
     }
     inh[i] = mean(universal_distance(vals_i, dist_fun = dist_fun, ...), na.rm = na.rm)
   }
-  # region$inh = inh
   return(inh)
 }
 
+reg_inhomogeneity2 = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
+  v = terra::vect(region)
+  vc = terra::cells(raster, v)
+  inh = vector(mode = "numeric", length = length(v))
+  for (i in seq_len(length(v))){
+    vals_i = terra::extract(raster, vc[vc[, 1] == i, ][, 2])
+    if (sample_size < 1){
+      vals_i = vals_i[sample(nrow(vals_i), size = max(sample_size * nrow(vals_i), 3), replace = TRUE), , drop = FALSE]
+    } else if (sample_size > 1) {
+      vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
+    }
+    inh[i] = mean(universal_distance(vals_i, dist_fun = dist_fun, ...), na.rm = na.rm)
+  }
+  return(inh)
+}
 
-# reg_inh = reg_inhomogeneity(vr, volcano, sample_size = 1)
-# reg_inh2 = reg_inhomogeneity(vr, volcano, sample_size = 0.1)
-#
-# plot(reg_inh$inh, reg_inh2$inh)
-# cor(reg_inh$inh, reg_inh2$inh)
-#
-# plot(volcano)
-# plot(reg_inh[4, 5], add = TRUE)
+reg_inhomogeneity3 = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
+  size_limit_ncell = 1000000000
+  raster_ncell = terra::ncell(raster)
+  v = terra::vect(region)
+  if (raster_ncell < size_limit_ncell){
+    vc = terra::cells(raster, v)
+  }
+  inh = vector(mode = "numeric", length = length(v))
+  for (i in seq_len(length(v))){
+    if (raster_ncell < size_limit_ncell){
+      vals_i = terra::extract(raster, vc[vc[, 1] == i, ][, 2])
+    } else {
+      vals_i = terra::extract(raster, v[i], ID = FALSE, raw = TRUE)
+    }
+    if (sample_size < 1){
+      vals_i = vals_i[sample(nrow(vals_i), size = max(sample_size * nrow(vals_i), 3), replace = TRUE), , drop = FALSE]
+    } else if (sample_size > 1) {
+      vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
+    }
+    inh[i] = mean(universal_distance(vals_i, dist_fun = dist_fun, ...), na.rm = na.rm)
+  }
+  return(inh)
+}
+
+reg_inhomogeneity4 = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
+  size_limit_ncell = 100000000
+  raster_ncell = terra::ncell(raster)
+  v = terra::vect(region)
+  if (raster_ncell < size_limit_ncell){
+    vc = terra::cells(raster, v)
+  }
+  inh = vector(mode = "numeric", length = length(v))
+  for (i in seq_len(length(v))){
+    if (raster_ncell < size_limit_ncell){
+      cell_numbers_i = vc[vc[, 1] == i, ][, 2]
+      if (sample_size < 1){
+        cell_numbers_i = cell_numbers_i[sample(length(cell_numbers_i), size = max(c(sample_size * length(cell_numbers_i), 3)), replace = FALSE)]
+      } else if (sample_size > 1) {
+        cell_numbers_i = cell_numbers_i[sample(length(cell_numbers_i), size = min(c(length(cell_numbers_i), sample_size)))]
+      }
+      vals_i = terra::extract(raster, cell_numbers_i)
+    } else {
+      vals_i = terra::extract(raster, v[i], ID = FALSE, raw = TRUE)
+      if (sample_size < 1){
+        vals_i = vals_i[sample(nrow(vals_i), size = max(sample_size * nrow(vals_i), 3), replace = TRUE), , drop = FALSE]
+      } else if (sample_size > 1) {
+        vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
+      }
+    }
+
+    inh[i] = mean(universal_distance(vals_i, dist_fun = dist_fun, ...), na.rm = na.rm)
+  }
+  return(inh)
+}
