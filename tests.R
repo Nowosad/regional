@@ -44,8 +44,10 @@ bench::mark(reg_inhomogeneity(vr, volcano2, sample_size = 1),
             reg_inhomogeneity4(vr, volcano2, sample_size = 1)
             )
 
-bench::mark(reg_inhomogeneity(vr, volcano2, sample_size = 500),
-            reg_inhomogeneity2(vr, volcano2, sample_size = 500),
-            reg_inhomogeneity3(vr, volcano2, sample_size = 500),
-            reg_inhomogeneity4(vr, volcano2, sample_size = 500)
+bench::mark(reg_inhomogeneity(vr, volcano, sample_size = 500),
+            reg_inhomogeneity2(vr, volcano, sample_size = 500),
+            reg_inhomogeneity3(vr, volcano, sample_size = 500),
+            reg_inhomogeneity4(vr, volcano, sample_size = 500),
+            reg_inhomogeneity5(vr, volcano, sample_size = 500),
+            iterations = 5
             )

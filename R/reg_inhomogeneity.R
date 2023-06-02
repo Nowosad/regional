@@ -70,7 +70,7 @@ reg_inhomogeneity2 = function(region, raster, dist_fun = "euclidean", sample_siz
 }
 
 reg_inhomogeneity3 = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
-  size_limit_ncell = 1000000000
+  size_limit_ncell = 100000000
   raster_ncell = terra::ncell(raster)
   v = terra::vect(region)
   if (raster_ncell < size_limit_ncell){
@@ -92,7 +92,7 @@ reg_inhomogeneity3 = function(region, raster, dist_fun = "euclidean", sample_siz
   }
   return(inh)
 }
-
+#' @export
 reg_inhomogeneity4 = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
   size_limit_ncell = 100000000
   raster_ncell = terra::ncell(raster)
@@ -123,3 +123,24 @@ reg_inhomogeneity4 = function(region, raster, dist_fun = "euclidean", sample_siz
   }
   return(inh)
 }
+#' @export
+reg_inhomogeneity5 = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
+  size_limit_ncell = 100000000
+  raster_ncell = terra::ncell(raster)
+  v = terra::vect(region)
+  if (raster_ncell < size_limit_ncell){
+    vc = terra::cells(raster, v)
+  }
+  inh = vector(mode = "numeric", length = length(v))
+  for (i in seq_len(length(v))){
+    if (raster_ncell < size_limit_ncell){
+      cell_numbers_i = vc[vc[, 1] == i, ][, 2]
+      vals_i = sample_cells(raster, v[i], sample_size)
+    } else {
+      vals_i = sample_vals(raster, v[i], sample_size)
+    }
+    inh[i] = mean(universal_distance(vals_i, dist_fun = dist_fun, ...), na.rm = na.rm)
+  }
+  return(inh)
+}
+
