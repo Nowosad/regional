@@ -2,4 +2,6 @@
 
 export(reg_distinction)
 export(reg_inhomogeneity)
+export(reg_inhomogeneity4)
+export(reg_inhomogeneity5)
 export(reg_isolation)

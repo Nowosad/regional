@@ -51,3 +51,13 @@ bench::mark(reg_inhomogeneity(vr, volcano, sample_size = 500),
             reg_inhomogeneity5(vr, volcano, sample_size = 500),
             iterations = 5
             )
+
+library(regional)
+bench::mark(reg_inhomogeneity(vr, volcano, sample_size = 500),
+            reg_inhomogeneity4(vr, volcano, sample_size = 500),
+            reg_inhomogeneity5(vr, volcano, sample_size = 500),
+            iterations = 5
+)
+
+profvis::profvis(reg_inhomogeneity5(vr, volcano, sample_size = 500))
+profvis::profvis(reg_inhomogeneity4(vr, volcano, sample_size = 500))

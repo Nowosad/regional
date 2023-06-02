@@ -135,7 +135,7 @@ reg_inhomogeneity5 = function(region, raster, dist_fun = "euclidean", sample_siz
   for (i in seq_len(length(v))){
     if (raster_ncell < size_limit_ncell){
       cell_numbers_i = vc[vc[, 1] == i, ][, 2]
-      vals_i = sample_cells(raster, v[i], sample_size)
+      vals_i = sample_cells(raster, cell_numbers_i, sample_size)
     } else {
       vals_i = sample_vals(raster, v[i], sample_size)
     }
