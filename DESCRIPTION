@@ -20,6 +20,7 @@ Imports:
     philentropy (>= 0.6.0),
     terra
 BugReports: https://github.com/Nowosad/regional/issues
+URL: https://jakubnowosad.com/regional/
 Suggests: 
     supercells,
     sf,
