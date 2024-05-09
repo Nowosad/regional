@@ -11,6 +11,7 @@ Calculates intra-regional and inter-regional similarities based on user-provided
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://jakubnowosad.com/regional/}
   \item Report bugs at \url{https://github.com/Nowosad/regional/issues}
 }
 
