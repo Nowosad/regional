@@ -11,6 +11,7 @@ reg_distinction(
   sample_size = 1,
   unit = "log2",
   na.rm = FALSE,
+  engine = c("lowmem", "speed"),
   ...
 )
 }
@@ -30,6 +31,10 @@ of each region will be used in calculations.}
 compute distances that depend on log computations.}
 
 \item{na.rm}{Whether NA values should be stripped from the calculations.}
+
+\item{engine}{A character string specifying the computation strategy:
+\code{"lowmem"} extracts values on the fly (lower memory, slower),
+\code{"speed"} caches per-region extracts (higher memory, faster).}
 
 \item{...}{Additional arguments for \code{philentropy::dist_one_one}, \code{proxy::dist}, or \code{dtwclust::dtw_basic}.
 When \code{dist_fun = "dtw"} is used, \code{ndim} should be set to specify how many dimension the input raster time-series has.}
