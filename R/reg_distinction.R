@@ -14,8 +14,8 @@
 #' @param unit a character string specifying the logarithm unit that should be used to
 #' compute distances that depend on log computations.
 #' @param na.rm Whether NA values should be stripped from the calculations.
-#' @param engine A character string specifying the computation strategy (default: `"lowmem"`).
-#' `"lowmem"` extracts values on the fly for each comparison, which minimizes memory
+#' @param optimize_for A character string specifying what to optimize for (default: `"memory"`).
+#' `"memory"` extracts values on the fly for each comparison, which minimizes memory
 #' usage but can be substantially slower for large rasters or many regions.
 #' `"speed"` caches per-region extracts once and reuses them across comparisons,
 #' which increases memory usage but is typically much faster.
@@ -42,12 +42,12 @@
 #'     plot(vr["dis"], add = TRUE)
 #'  }
 #' }
-reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, engine = c("lowmem", "speed"), ...) {
+reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, optimize_for = c("memory", "speed"), ...) {
   # set.seed(32)
-  engine = match.arg(engine)
+  optimize_for = match.arg(optimize_for)
   v = terra::vect(region)
   n_regions = length(v)
-  get_vals = get_region_values(v, raster, engine)
+  get_vals = get_region_values(v, raster, optimize_for)
   dis = vector(mode = "numeric", length = n_regions)
   # dis_j = vector(mode = "numeric", length = length(ids) - 1)
   for (i in seq_len(n_regions)){

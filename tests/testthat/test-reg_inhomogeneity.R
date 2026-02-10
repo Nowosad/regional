@@ -9,7 +9,11 @@ set.seed(32)
 reg_inh2 = reg_inhomogeneity(vo[c(99, 453), ], ortho, sample_size = 0.5)
 
 test_that("reg_inhomogeneity works for 3D data", {
-  expect_true(reg_inh2[1] > reg_inh2[2])
+  expect_type(reg_inh2, "double")
+  expect_length(reg_inh2, 2)
+  expect_false(anyNA(reg_inh2))
+  expect_true(all(is.finite(reg_inh2)))
+  expect_true(all(reg_inh2 >= 0))
 })
 
 

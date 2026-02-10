@@ -66,8 +66,8 @@ dtw_multidim = function(x, y, ndim, ...){
 }
 
 # Build a region-value accessor using cached or on-demand extraction; returns a function(i) -> matrix.
-get_region_values = function(v, raster, engine) {
-  if (engine == "speed") {
+get_region_values = function(v, raster, optimize_for) {
+  if (optimize_for == "speed") {
     n_regions = length(v)
     vals_list = vector(mode = "list", length = n_regions)
     for (i in seq_len(n_regions)) {

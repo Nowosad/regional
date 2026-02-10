@@ -12,6 +12,17 @@ test_that("reg_distinction works for 3D data", {
   expect_true(reg_dis2[1] > reg_dis2[2])
 })
 
+test_that("reg_distinction modes are identical", {
+  idx = c(99, 453)
+
+  set.seed(32)
+  reg_dis_memory = reg_distinction(vo[idx, ], ortho, sample_size = 0.5, optimize_for = "memory")
+  set.seed(32)
+  reg_dis_speed = reg_distinction(vo[idx, ], ortho, sample_size = 0.5, optimize_for = "speed")
+
+  expect_equal(reg_dis_memory, reg_dis_speed)
+})
+
 # reg_iso2 = reg_isolation(vo, ortho, sample_size = 500)
 # reg_iso2
 # reg_dis2 = reg_distinction(vo, ortho, sample_size = 50)
