@@ -14,6 +14,11 @@
 #' @param unit a character string specifying the logarithm unit that should be used to
 #' compute distances that depend on log computations.
 #' @param na.rm Whether NA values should be stripped from the calculations.
+#' @param optimize_for A character string specifying what to optimize for (default: `"memory"`).
+#' `"memory"` extracts values on the fly for each comparison, which minimizes memory
+#' usage but can be substantially slower for large rasters or many regions.
+#' `"speed"` caches per-region extracts once and reuses them across comparisons,
+#' which increases memory usage but is typically much faster.
 #' @param ... Additional arguments for `philentropy::dist_one_one`, `proxy::dist`, or `dtwclust::dtw_basic`.
 #' When `dist_fun = "dtw"` is used, `ndim` should be set to specify how many dimension the input raster time-series has.
 #'
@@ -37,27 +42,22 @@
 #'     plot(vr["dis"], add = TRUE)
 #'  }
 #' }
-reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, ...) {
+reg_distinction = function(region, raster, dist_fun = "euclidean", sample_size = 1, unit = "log2", na.rm = FALSE, optimize_for = c("memory", "speed"), ...) {
   # set.seed(32)
+  optimize_for = match.arg(optimize_for)
   v = terra::vect(region)
-  dis = vector(mode = "numeric", length = length(v))
+  n_regions = length(v)
+  get_vals = get_region_values(v, raster, optimize_for)
+  dis = vector(mode = "numeric", length = n_regions)
   # dis_j = vector(mode = "numeric", length = length(ids) - 1)
-  for (i in seq_len(length(v))){
+  for (i in seq_len(n_regions)){
     sum_dist = 0
     n_elem = 0
-    vals_i = terra::extract(raster, v[i], ID = FALSE, raw = TRUE)
-    if (sample_size < 1){
-      vals_i = vals_i[sample(nrow(vals_i), size = sample_size * nrow(vals_i)), , drop = FALSE]
-    } else if (sample_size > 1) {
-      vals_i = vals_i[sample(nrow(vals_i), size = min(c(nrow(vals_i), sample_size))), , drop = FALSE]
-    }
-    for (j in setdiff(seq_len(length(v)), i)){
-      vals_j = terra::extract(raster, v[j], ID = FALSE, raw = TRUE)
-      if (sample_size < 1){
-        vals_j = vals_j[sample(nrow(vals_j), size = sample_size * nrow(vals_j)), , drop = FALSE]
-      } else if (sample_size > 1) {
-        vals_j = vals_j[sample(nrow(vals_j), size = min(c(nrow(vals_j), sample_size))), , drop = FALSE]
-      }
+    vals_i = get_vals(i)
+    vals_i = sample_region_values(vals_i, sample_size)
+    for (j in setdiff(seq_len(n_regions), i)){
+      vals_j = get_vals(j)
+      vals_j = sample_region_values(vals_j, sample_size)
       dist_mat = universal_dist_many_many(vals_i, vals_j, dist_fun = dist_fun, ...)
       sum_dist = sum_dist + sum(dist_mat, na.rm = na.rm)
       if (na.rm){
